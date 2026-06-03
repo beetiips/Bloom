@@ -1,3 +1,2 @@
-body {
-    background-color: skyblue;
-}
+@import "auth.css";
+@import "login.css";

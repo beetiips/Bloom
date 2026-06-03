@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bloom{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/home.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="landing-container">
+        <div class="landing-card">
+            <h1 class="brand-logo">Bloom</h1>
+            <p class="brand-tagline">A sports app that actually wants the best for you.</p>
+
+            <a href="{{ path('app_register') }}" class="btn-start">
+                I take the first step
+            </a>
+        </div>
+    </div>
+{% endblock %}

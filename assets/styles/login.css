@@ -1,0 +1,232 @@
+/* ==========================================================================
+   VARIABLES DE COULEURS & THÈME (Bloom Minimalist)
+   ========================================================================== */
+:root {
+    --bg-app: #f4f7fa;
+    --bg-card: rgba(255, 255, 255, 0.9);
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --border-card: #cbd5e1;
+
+    --primary-blue: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-light: #eff6ff;
+
+    --danger-color: #ef4444;
+    --danger-bg: #fef2f2;
+}
+
+/* ==========================================================================
+   ARRIÈRE-PLAN APAISANT & VRAIES BULLES VISIBLES
+   ========================================================================== */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--bg-app);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.login-container::before,
+.login-container::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.6;
+    z-index: 1;
+    box-shadow: inset -10px -10px 20px rgba(0, 0, 0, 0.03);
+}
+
+/* Bulle 1 : Grosse bulle bleue en haut à gauche */
+.login-container::before {
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle at 30% 30%, #e0f2fe 0%, #7dd3fc 70%, #38bdf8 100%);
+    top: 15%;
+    left: 12%;
+    animation: bubbleFloat1 20s infinite ease-in-out;
+}
+
+/* Bulle 2 : Bulle mauve/lilas à droite */
+.login-container::after {
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle at 30% 30%, #f5f3ff 0%, #d8b4fe 70%, #c084fc 100%);
+    bottom: 20%;
+    right: 15%;
+    animation: bubbleFloat2 24s infinite ease-in-out;
+}
+
+/* Bulle 3 : Bulle cyan en bas à gauche, rattachée à la carte */
+.login-card::before {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.5;
+    z-index: -1;
+    width: 160px;
+    height: 160px;
+    background: radial-gradient(circle at 30% 30%, #ecfeff 0%, #67e8f9 70%, #22d3ee 100%);
+    bottom: -20%;
+    left: -30%;
+    animation: bubbleFloat1 16s infinite ease-in-out alternate;
+}
+
+@keyframes bubbleFloat1 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -50px) scale(1.05); }
+    100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes bubbleFloat2 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-40px, 40px) scale(0.95); }
+    100% { transform: translate(0, 0) scale(1); }
+}
+
+/* ==========================================================================
+   LA CARTE D'INSCRIPTION / CONNEXION
+   ========================================================================== */
+.login-card {
+    position: relative;
+    z-index: 10;
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 40px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.08), 0 0 1px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-card);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.login-header h2 {
+    color: var(--text-main);
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.login-header p {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+/* ==========================================================================
+   CHAMPS ET ÉLÉMENTS DU FORMULAIRE
+   ========================================================================== */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background-color: #ffffff;
+    color: var(--text-main);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+/* Case à cocher */
+.form-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.form-checkbox input[type="checkbox"] {
+    accent-color: var(--primary-blue);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.form-checkbox label {
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 0; /* Override de boostrap éventuel */
+}
+
+/* Bouton de soumission */
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-submit:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-submit:active {
+    transform: scale(0.98);
+}
+
+/* Erreurs */
+.login-alert {
+    background-color: var(--danger-bg);
+    color: var(--danger-color);
+    border: 1px solid #fca5a5;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+/* Footer (Liens alternatifs) */
+.login-footer {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.login-footer a {
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+}
