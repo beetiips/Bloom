@@ -12,11 +12,8 @@
     <div class="dashboard-container">
         <header class="dashboard-header">
             <div class="welcome-text">
-                <h1>Nice to see you {{ user.pseudo|default('Some Dude') }} </h1>
+                <h1>Nice to see you {{ user.pseudo|default('Philibert') }} </h1>
                 <p>Here's a little look into your day:</p>
-            </div>
-            <div class="user-badge">
-                Level : <span>{{ user.level|capitalize }}</span>
             </div>
         </header>
 
@@ -25,7 +22,7 @@
                 <h3>Sleep</h3>
                 <p class="card-desc">Your last nights</p>
                 <div class="card-content">
-                    <span class="main-stat">--</span>
+                    <span class="main-stat">No nights yet</span>
                     <p>Fill your night's data for a few days to see them here!</p>
                 </div>
             </div>
@@ -42,8 +39,8 @@
                 <h3>My routines</h3>
                 <p class="card-desc">Ready for some movement?</p>
                 <div class="card-actions">
-                    <a href="#" class="btn-dashboard">Create a routine</a>
-                    <a href="#" class="btn-dashboard btn-secondary">Start a workout</a>
+                    <a href="?" class="btn-dashboard">Create a routine</a>
+                    <a href="?" class="btn-dashboard btn-secondary">Start a workout</a>
                 </div>
             </div>
         </main>
