@@ -1,0 +1,120 @@
+.onboarding-card {
+    max-width: 500px !important;
+}
+
+/* ==========================================================================
+   BARRE DE PROGRESSION
+   ========================================================================== */
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: var(--border-color);
+    border-radius: 3px;
+    margin-bottom: 30px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 33.33%;
+    background: var(--primary-blue);
+    transition: width 0.3s ease;
+}
+
+/* ==========================================================================
+   GESTION DES ÉTAPES (STEPS)
+   ========================================================================== */
+.step {
+    display: none;
+}
+
+.step.active {
+    display: block;
+}
+
+.sleep-output {
+    display: block;
+    text-align: center;
+    font-weight: 600;
+    margin-top: 5px;
+    color: var(--text-main);
+}
+
+/* ==========================================================================
+   GROUPES DE BOUTONS RADIO (TUILES)
+   ========================================================================== */
+.radio-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.radio-group.column-layout {
+    flex-direction: column;
+}
+
+.radio-label,
+.radio-label-full {
+    flex: 1;
+    cursor: pointer;
+}
+
+.radio-label-full {
+    width: 100%;
+}
+
+.radio-input {
+    display: none;
+}
+
+.radio-tile {
+    padding: 15px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: var(--text-main);
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.radio-tile.text-left {
+    text-align: left;
+}
+
+.radio-tile strong {
+    color: var(--text-main);
+}
+
+/* Éats au survol et sélection */
+.radio-label:hover .radio-tile,
+.radio-label-full:hover .radio-tile {
+    border-color: var(--primary-blue);
+}
+
+.radio-input:checked + .radio-tile {
+    background: var(--primary-light);
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+}
+
+.radio-input:checked + .radio-tile strong {
+    color: var(--primary-blue);
+}
+
+/* ==========================================================================
+   BOUTONS DE NAVIGATION
+   ========================================================================== */
+.btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.btn-prev {
+    background-color: var(--text-muted) !important;
+}
+
+.btn-prev:hover {
+    background-color: #475569 !important;
+}
