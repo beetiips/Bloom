@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\WorkoutRoutineRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: WorkoutRoutineRepository::class)]
@@ -14,18 +13,11 @@ class WorkoutRoutine
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $dayOfWeek = null;
+    #[ORM\Column]
+    private ?string $day_of_week = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column]
     private ?string $name = null;
-
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
-
-    #[ORM\ManyToMany(targetEntity: Exercises::class)]
-    private Collection $exercises;
 
     public function getId(): ?int
     {
@@ -34,12 +26,12 @@ class WorkoutRoutine
 
     public function getDayOfWeek(): ?string
     {
-        return $this->dayOfWeek;
+        return $this->day_of_week;
     }
 
-    public function setDayOfWeek(string $dayOfWeek): static
+    public function setDayOfWeek(string $day_of_week): static
     {
-        $this->dayOfWeek = $dayOfWeek;
+        $this->day_of_week = $day_of_week;
 
         return $this;
     }
@@ -56,39 +48,4 @@ class WorkoutRoutine
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): static
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Exercises>
-     */
-    public function getExercises(): Collection
-    {
-        return $this->exercises;
-    }
-
-    public function addExercise(Exercises $exercise): static
-    {
-        if (!$this->exercises->contains($exercise)) {
-            $this->exercises->add($exercise);
-        }
-
-        return $this;
-    }
-
-    public function removeExercise(Exercises $exercise): static
-    {
-        $this->exercises->removeElement($exercise);
-
-        return $this;
-    }
 }

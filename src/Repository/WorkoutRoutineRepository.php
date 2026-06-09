@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\WorkoutRoutine;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,28 +17,14 @@ class WorkoutRoutineRepository extends ServiceEntityRepository
         parent::__construct($registry, WorkoutRoutine::class);
     }
 
-//    /**
-//     * @return WorkoutRoutine[] Returns an array of WorkoutRoutine objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('w')
-//            ->andWhere('w.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('w.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?WorkoutRoutine
-//    {
-//        return $this->createQueryBuilder('w')
-//            ->andWhere('w.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findRoutinesByUserAndDay(User $user, string $day): array
+    {
+        return $this->createQueryBuilder('routine')
+            ->andWhere('routine.user_id = :user')
+            ->andWhere('routine.day_of_week = :day')
+            ->setParameter('user', $user)
+            ->setParameter('day', $day)
+            ->getQuery()
+            ->getResult();
+    }
 }

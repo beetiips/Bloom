@@ -62,4 +62,5 @@ class WorkoutSet
 
         return $this;
     }
+
 }
