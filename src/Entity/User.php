@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -34,6 +36,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?bool $hasCompletedOnboarding = false;
+
+    /**
+     * @var Collection<int, WorkoutRoutine>
+     */
+    #[ORM\OneToMany(targetEntity: WorkoutRoutine::class, mappedBy: 'user_id')]
+    private Collection $workoutRoutines;
+
+    public function __construct()
+    {
+        $this->workoutRoutines = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -117,6 +130,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setHasCompletedOnboarding(bool $hasCompletedOnboarding): static
     {
         $this->hasCompletedOnboarding = $hasCompletedOnboarding;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, WorkoutRoutine>
+     */
+    public function getWorkoutRoutines(): Collection
+    {
+        return $this->workoutRoutines;
+    }
+
+    public function addWorkoutRoutine(WorkoutRoutine $workoutRoutine): static
+    {
+        if (!$this->workoutRoutines->contains($workoutRoutine)) {
+            $this->workoutRoutines->add($workoutRoutine);
+            $workoutRoutine->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWorkoutRoutine(WorkoutRoutine $workoutRoutine): static
+    {
+        if ($this->workoutRoutines->removeElement($workoutRoutine)) {
+            // set the owning side to null (unless already changed)
+            if ($workoutRoutine->getUserId() === $this) {
+                $workoutRoutine->setUserId(null);
+            }
+        }
+
         return $this;
     }
 }

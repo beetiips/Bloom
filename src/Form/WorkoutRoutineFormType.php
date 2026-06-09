@@ -28,7 +28,7 @@ class WorkoutRoutineFormType extends AbstractType
                 ],
                 'placeholder' => 'Choose a day for your routine',
             ])
-            ->add('exercise', EntityType::class, [
+            ->add('Exercises', EntityType::class, [
                 'class' =>  Exercises::class ,
                 'choice_label' => 'name',
                 'expanded' => true,

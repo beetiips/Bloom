@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ExercisesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -46,6 +48,17 @@ class Exercises
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $owner = null;
+
+    /**
+     * @var Collection<int, WorkoutRoutine>
+     */
+    #[ORM\ManyToMany(targetEntity: WorkoutRoutine::class, mappedBy: 'Exercises')]
+    private Collection $workoutRoutines;
+
+    public function __construct()
+    {
+        $this->workoutRoutines = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -180,6 +193,33 @@ class Exercises
     public function setOwner(?string $owner): static
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, WorkoutRoutine>
+     */
+    public function getWorkoutRoutines(): Collection
+    {
+        return $this->workoutRoutines;
+    }
+
+    public function addWorkoutRoutine(WorkoutRoutine $workoutRoutine): static
+    {
+        if (!$this->workoutRoutines->contains($workoutRoutine)) {
+            $this->workoutRoutines->add($workoutRoutine);
+            $workoutRoutine->addExercise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWorkoutRoutine(WorkoutRoutine $workoutRoutine): static
+    {
+        if ($this->workoutRoutines->removeElement($workoutRoutine)) {
+            $workoutRoutine->removeExercise($this);
+        }
 
         return $this;
     }
