@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Bloom - New Routine{% endblock %}
+{% block title %}Bloom - Edit Routine{% endblock %}
 
 {% block body %}
     <div>
-        <h1>Create a New Routine</h1>
+        <h1>Edit Routine : {{ workoutPlan.name }}</h1>
 
         {{ form_start(form) }}
         {{ form_widget(form) }}
-        <button type="submit">Save Routine</button>
+        <button type="submit">Update Routine</button>
         {{ form_end(form) }}
 
         <br>

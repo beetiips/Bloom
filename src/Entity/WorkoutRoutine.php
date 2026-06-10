@@ -16,14 +16,32 @@ class WorkoutRoutine
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?string $day_of_week = null;
-
-    #[ORM\Column]
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'workoutRoutines')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    #[ORM\Column]
+    private ?bool $mondayChecked = null;
+
+    #[ORM\Column]
+    private ?bool $tuesdayChecked = null;
+
+    #[ORM\Column]
+    private ?bool $wednesdayChecked = null;
+
+    #[ORM\Column]
+    private ?bool $thursdayChecked = null;
+
+    #[ORM\Column]
+    private ?bool $fridayChecked = null;
+
+    #[ORM\Column]
+    private ?bool $saturdayChecked = null;
+
+    #[ORM\Column]
+    private ?bool $sundayChecked = null;
 
     /**
      * @var Collection<int, Exercises>
@@ -39,18 +57,6 @@ class WorkoutRoutine
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getDayOfWeek(): ?string
-    {
-        return $this->day_of_week;
-    }
-
-    public function setDayOfWeek(string $day_of_week): static
-    {
-        $this->day_of_week = $day_of_week;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -100,5 +106,90 @@ class WorkoutRoutine
 
         return $this;
     }
+
+    public function getMondayChecked(): ?bool
+    {
+        return $this->mondayChecked;
+    }
+
+    public function setMondayChecked(bool $mondayChecked): static
+    {
+        $this->mondayChecked = $mondayChecked;
+
+        return $this;
+    }
+
+    public function getTuesdayChecked(): ?bool
+    {
+        return $this->tuesdayChecked;
+    }
+
+    public function setTuesdayChecked(bool $tuesdayChecked): static
+    {
+        $this->tuesdayChecked = $tuesdayChecked;
+
+        return $this;
+    }
+
+    public function getWednesdayChecked(): ?bool
+    {
+        return $this->wednesdayChecked;
+    }
+
+    public function setWednesdayChecked(bool $wednesdayChecked): static
+    {
+        $this->wednesdayChecked = $wednesdayChecked;
+
+        return $this;
+    }
+
+    public function getThursdayChecked(): ?bool
+    {
+        return $this->thursdayChecked;
+    }
+
+    public function setThursdayChecked(bool $thursdayChecked): static
+    {
+        $this->thursdayChecked = $thursdayChecked;
+
+        return $this;
+    }
+
+    public function getFridayChecked(): ?bool
+    {
+        return $this->fridayChecked;
+    }
+
+    public function setFridayChecked(bool $fridayChecked): static
+    {
+        $this->fridayChecked = $fridayChecked;
+
+        return $this;
+    }
+
+    public function getSaturdayChecked(): ?bool
+    {
+        return $this->saturdayChecked;
+    }
+
+    public function setSaturdayChecked(bool $saturdayChecked): static
+    {
+        $this->saturdayChecked = $saturdayChecked;
+
+        return $this;
+    }
+
+    public function getSundayChecked(): ?bool
+    {
+        return $this->sundayChecked;
+    }
+
+    public function setSundayChecked(bool $sundayChecked): static
+    {
+        $this->sundayChecked = $sundayChecked;
+
+        return $this;
+    }
+
 
 }
