@@ -1,0 +1,256 @@
+/* ==========================================================================
+   VARIABLES DE COULEURS & THÈME (Bloom Minimalist - Dashboard Extension)
+   ========================================================================== */
+:root {
+    --bg-app: #f4f7fa;
+    --bg-card: rgba(255, 255, 255, 0.9);
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --border-card: #cbd5e1;
+
+    --primary-blue: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-light: #eff6ff;
+
+    --danger-color: #ef4444;
+    --danger-bg: #fef2f2;
+    --success-bg: #f0fdf4;
+    --success-color: #16a34a;
+}
+
+/* ==========================================================================
+   STRUCTURE GLOBALE & BULLES ANIMÉES
+   ========================================================================== */
+.dashboard-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Permet le scroll naturel si la page est longue */
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    background-color: var(--bg-app);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+/* Bulles décoratives en arrière-plan */
+.dashboard-container::before,
+.dashboard-container::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.6;
+    z-index: 1;
+    box-shadow: inset -10px -10px 20px rgba(0, 0, 0, 0.03);
+}
+
+.dashboard-container::before {
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle at 30% 30%, #e0f2fe 0%, #7dd3fc 70%, #38bdf8 100%);
+    top: 10%;
+    left: 5%;
+    animation: bubbleFloat1 22s infinite ease-in-out;
+}
+
+.dashboard-container::after {
+    width: 260px;
+    height: 260px;
+    background: radial-gradient(circle at 30% 30%, #f5f3ff 0%, #d8b4fe 70%, #c084fc 100%);
+    bottom: 15%;
+    right: 5%;
+    animation: bubbleFloat2 26s infinite ease-in-out;
+}
+
+@keyframes bubbleFloat1 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(40px, -60px) scale(1.05); }
+    100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes bubbleFloat2 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-30px, 50px) scale(0.95); }
+    100% { transform: translate(0, 0) scale(1); }
+}
+
+/* ==========================================================================
+   PANNEAU CENTRAL (Largeur adaptée aux listes)
+   ========================================================================== */
+.dashboard-card {
+    position: relative;
+    z-index: 10;
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 40px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 900px; /* Plus large que la page login pour respirer */
+    box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.08), 0 0 1px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-card);
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.dashboard-header h2 {
+    color: var(--text-main);
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.dashboard-header p {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+/* BARRE D'ACTION (Bouton de création) */
+.dashboard-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 32px;
+}
+
+.btn-create {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-create:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-create:active {
+    transform: scale(0.98);
+}
+
+/* ==========================================================================
+   SECTIONS DE CONTENU
+   ========================================================================== */
+.dashboard-section {
+    margin-bottom: 40px;
+}
+
+.dashboard-section:last-child {
+    margin-bottom: 0;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-title.today {
+    color: var(--primary-blue);
+}
+
+.section-title.all {
+    color: var(--text-main);
+}
+
+/* ÉLÉMENTS INDIVIDUELS (Cartes Blanches Internes) */
+.routine-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.routine-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+}
+
+.routine-item-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.routine-item-card:hover {
+    border-color: var(--border-card);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+.routine-item-card h4 {
+    color: var(--text-main);
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.exercise-list {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.exercise-list li {
+    margin-bottom: 4px;
+}
+
+/* ÉTAT VIDE / REPOS */
+.rest-day-box {
+    background-color: var(--primary-light);
+    color: var(--primary-blue);
+    border: 1px solid #bfdbfe;
+    padding: 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   FOOTER DES CARTES & LIENS D'ACTION
+   ========================================================================== */
+.card-actions-footer {
+    margin-top: 20px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 16px;
+    font-size: 13px;
+}
+
+.card-actions-footer a {
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-weight: 500;
+    transition: text-decoration 0.2s;
+}
+
+.card-actions-footer a:hover {
+    text-decoration: underline;
+}
+
+.card-actions-footer a.delete-link {
+    color: var(--danger-color);
+}

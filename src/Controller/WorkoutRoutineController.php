@@ -27,10 +27,10 @@ final class WorkoutRoutineController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($workoutRoutine);
             $entityManager->flush();
-            return $this->redirectToRoute('app_new_routine');
+            return $this->redirectToRoute('app_workout_routine');
         }
 
-        return $this->render('routine/index.html.twig', [
+        return $this->render('routine/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -40,9 +40,9 @@ final class WorkoutRoutineController extends AbstractController
     public function index(WorkoutRoutineRepository $workoutRoutineRepository): Response
     {
         $user = $this->getUser();
-        $currentDay = date('l');
+        $dayColumn = lcfirst(date('l')) . 'Checked';
 
-        $dayRoutines = $workoutRoutineRepository->findBy(['user' => $user, 'day' => $currentDay]);
+        $dayRoutines = $workoutRoutineRepository->findBy(['user' => $user, $dayColumn => true]);
         $allRoutines = $workoutRoutineRepository->findBy(['user' => $user]);
 
         return $this->render('routine/index.html.twig', [
@@ -68,7 +68,7 @@ final class WorkoutRoutineController extends AbstractController
             return $this->redirectToRoute('app_workout_routine');
         }
 
-        return $this->render('routine/index.html.twig', [
+        return $this->render('routine/edit.html.twig', [
             'form' => $form->createView(),
             'workoutRoutine' => $workoutRoutine,
         ]);
