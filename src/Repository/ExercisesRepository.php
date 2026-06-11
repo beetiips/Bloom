@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Exercises;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,28 +17,29 @@ class ExercisesRepository extends ServiceEntityRepository
         parent::__construct($registry, Exercises::class);
     }
 
-    //    /**
-    //     * @return Exercises[] Returns an array of Exercises objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('e.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findExercisesForRoutinesByFilter(?string $search, ?string $body_part, ?string $equipment): array
+    {
+        $queryBuilder = $this->createQueryBuilder('e');
 
-    //    public function findOneBySomeField($value): ?Exercises
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        if ($search) {
+            $queryBuilder
+                ->andWhere('e.name LIKE :search')
+                ->setParameter('search', '%' . $search . '%');
+        }
+
+        if ($body_part) {
+            $queryBuilder
+                ->andWhere('e.body_part = :body_part')
+                ->setParameter('body_part', $body_part);
+        }
+
+        if ($equipment) {
+            $queryBuilder
+                ->andWhere('e.equipment = :equipment')
+                ->setParameter('equipment', $equipment);
+        }
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
 }

@@ -8,12 +8,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-
 #[IsGranted('ROLE_USER')]
 final class OnboardingController extends AbstractController
 {
     #[Route('/onboarding', name: 'app_onboarding')]
-    public function index(Request $request, EntityManagerInterface $em): Response
+    public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
 
@@ -29,7 +28,7 @@ final class OnboardingController extends AbstractController
 
             $user->setLevel($level);
             $user->setHasCompletedOnboarding(true);
-            $em->flush();
+            $entityManager->flush();
 
             return $this->redirectToRoute('app_dashboard');
         }

@@ -27,8 +27,6 @@ class WorkoutRoutineFormType extends AbstractType
             ->add('exercises', EntityType::class, [
                 'class' => Exercises::class,
                 'choice_label' => 'name',
-                'multiple' => true,
-                'expanded' => true,
             ])
         ;
     }
