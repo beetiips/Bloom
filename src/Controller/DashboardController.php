@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\WorkoutRoutineRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -21,6 +22,24 @@ class DashboardController extends AbstractController
 
         return $this->render('dashboard/index.html.twig', [
             'user' => $user,
+        ]);
+    }
+
+    #[Route('/dashboard', name: 'app_dashboard')]
+    #[IsGranted('ROLE_USER')]
+    public function workoutRoutine(WorkoutRoutineRepository $workoutRoutineRepository): Response
+    {
+        $user = $this->getUser();
+
+        $dayColumn = lcfirst(date('l')) . 'Checked';
+
+        $dayRoutines = $workoutRoutineRepository->findBy([
+            'user' => $user,
+            $dayColumn => true
+        ]);
+
+        return $this->render('dashboard/index.html.twig', [
+            'dayRoutines' => $dayRoutines,
         ]);
     }
 }
