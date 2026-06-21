@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Something went wrong - Bloom{% endblock %}
+
+{% block body %}
+    <div class="dashboard-container" style="text-align: center; padding: 80px 20px;">
+        <div class="dashboard-card" style="max-width: 500px; margin: 0 auto; padding: 40px;">
+
+            <h1 style="font-size: 64px; color: var(--text-muted); margin-bottom: 10px; font-weight: 700;">
+                Oops!
+            </h1>
+
+            <h2 style="font-size: 20px; margin-bottom: 20px;">An unexpected error occurred</h2>
+
+            <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 15px; line-height: 1.6;">
+                Something went wrong on our end. Try refreshing the page or going back to your dashboard.
+            </p>
+
+            <div style="display: flex; gap: 12px; justify-content: center;">
+                <a href="{{ path('app_dashboard') }}" class="btn-dashboard" style="text-decoration: none; margin: 0; background-color: #3b82f6; color: white;">
+                    Go to Dashboard
+                </a>
+                <a href="javascript:history.back()" class="btn-dashboard" style="text-decoration: none; margin: 0; padding: 10px 20px; display: inline-flex; align-items: center;">
+                    Go Back
+                </a>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

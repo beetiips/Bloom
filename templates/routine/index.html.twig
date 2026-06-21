@@ -59,8 +59,11 @@
                             </div>
 
                             <div class="card-actions-footer">
-                                <a href="#">Edit</a>
-                                <a href="#" class="delete-link">Delete</a>
+                                <a href="{{ path('app_edit_routine', {id: routine.id})}}">Edit</a>
+                                <form action="{{ path('app_delete_routine', {id: routine.id}) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this routine?');" style="display: inline;">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ routine.id) }}">
+                                    <button type="submit" class="delete-link">Delete</button>
+                                    </form>
                             </div>
                         </div>
                     {% endfor %}

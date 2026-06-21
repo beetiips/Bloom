@@ -29,6 +29,21 @@ class DailyLog
     #[ORM\Column]
     private ?int $sleep_quality = null;
 
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

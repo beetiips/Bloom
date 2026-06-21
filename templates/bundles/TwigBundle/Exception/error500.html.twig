@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Server Error - Bloom{% endblock %}
+
+{% block body %}
+    <div class="dashboard-container" style="text-align: center; padding: 80px 20px;">
+        <div class="dashboard-card" style="max-width: 500px; margin: 0 auto; padding: 40px;">
+
+            <div style="font-size: 72px; margin-bottom: 10px; line-height: 1;">⚡</div>
+
+            <h1 style="font-size: 28px; color: #ef4444; margin-bottom: 15px; font-weight: 700;">
+                Internal Server Error
+            </h1>
+
+            <h2 style="font-size: 18px; margin-bottom: 20px; color: var(--text-color);">The system stubbed its toe</h2>
+
+            <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 15px; line-height: 1.6;">
+                Our servers are having a little trouble processing this request. Don't worry, your workout data is safe. We are already looking into it.
+            </p>
+
+            <a href="{{ path('app_dashboard') }}" class="btn-dashboard" style="text-decoration: none; display: inline-block; margin: 0; background-color: #3b82f6; color: white;">
+                Return to Dashboard
+            </a>
+
+        </div>
+    </div>
+{% endblock %}

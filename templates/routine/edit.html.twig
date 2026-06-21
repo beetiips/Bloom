@@ -2,16 +2,218 @@
 
 {% block title %}Bloom - Edit Routine{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/newroutine.css') }}">
+{% endblock %}
+
 {% block body %}
-    <div>
-        <h1>Edit Routine : {{ workoutPlan.name }}</h1>
+    <div class="dashboard-container">
+        <div class="dashboard-card">
 
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button type="submit">Update Routine</button>
-        {{ form_end(form) }}
+            <div class="dashboard-header">
+                <a href="{{ path('app_workout_routine') }}" class="btn-dashboard"> ← </a>
+                <h1>Edit Routine: {{ routine.name }}</h1>
+            </div>
 
-        <br>
-        <a href="{{ path('app_workout_routine') }}">Back to list</a>
+            {{ form_start(form) }}
+
+            <div class="form-choose-name-day">
+                {{ form_row(form.name, {'attr': {'placeholder': 'e.g., Lower Body Hypertrophy'}}) }}
+
+                <label style="font-weight: 600; display: block; margin-bottom: 8px;">Schedule Days</label>
+                <div class="days-selector">
+                    {% for child in [form.mondayChecked, form.tuesdayChecked, form.wednesdayChecked, form.thursdayChecked, form.fridayChecked, form.saturdayChecked, form.sundayChecked] %}
+                        <label class="day-checkbox-label">
+                            {{ form_widget(child, {'attr': {'class': 'hidden-box'}}) }}
+                            {{ child.vars.label|replace({'Checked': ''})|upper }}
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="main-builder-layout">
+
+                <div class="search-section">
+                    <div class="search-controls" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px;">
+                        <input type="text" id="exercise-search" placeholder="Search exercises (e.g., Squat, Hip Thrust...)" style="flex: 1; min-width: 200px;">
+                        <button type="button" id="search-button" class="btn-create" style="padding: 0 15px; margin: 0;">Search</button>
+
+                        <select id="body-part-select" style="width: 100%;">
+                            <option value="">All Body Parts</option>
+                            <option value="upper legs">Upper legs</option>
+                            <option value="lower legs">Lower legs</option>
+                            <option value="waist">Waist</option>
+                            <option value="back">Back</option>
+                            <option value="chest">Chest</option>
+                            <option value="upper arms">Upper arms</option>
+                            <option value="lower arms">Lower arms</option>
+                            <option value="cardio">Cardio</option>
+                            <option value="shoulders">Shoulders</option>
+                        </select>
+
+                        <select id="equipment-select" style="width: 100%;">
+                            <option value="">All Equipment</option>
+                            <option value="body weight">Body weight</option>
+                            <option value="cable">Cable</option>
+                            <option value="leverage machine">Leverage machine</option>
+                            <option value="assisted">Assisted</option>
+                            <option value="band">Band</option>
+                            <option value="barbell">Barbell</option>
+                            <option value="rope">Rope</option>
+                        </select>
+                    </div>
+
+                    <div id="search-results"></div>
+                </div>
+
+                <div class="selected-section">
+                    <h3>Selected routine</h3>
+                    <div id="selected-exercises-list"></div>
+                </div>
+
+            </div>
+
+            <div id="symfony-exercises-pool" style="display: none;">
+                {{ form_widget(form.exercises) }}
+            </div>
+
+            <button type="submit" class="btn-create">Update Routine</button>
+            {{ form_end(form) }}
+
+            <br>
+            <a href="{{ path('app_workout_routine') }}" style="color: var(--text-muted); text-decoration: none; font-size: 14px;">Back to list</a>
+        </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('exercise-search');
+            const searchButton = document.getElementById('search-button');
+            const bodyPartSelect = document.getElementById('body-part-select');
+            const equipmentSelect = document.getElementById('equipment-select');
+            const resultsContainer = document.getElementById('search-results');
+            const selectedContainer = document.getElementById('selected-exercises-list');
+            const symfonyPool = document.getElementById('symfony-exercises-pool');
+
+            document.querySelectorAll('.day-checkbox-label').forEach(label => {
+                const checkbox = label.querySelector('input[type="checkbox"]');
+                const updateStyle = () => {
+                    if (checkbox && checkbox.checked) {
+                        label.classList.add('active');
+                    } else {
+                        label.classList.remove('active');
+                    }
+                };
+                if (checkbox) {
+                    checkbox.addEventListener('change', updateStyle);
+                    updateStyle();
+                }
+            });
+
+            async function fetchExercises() {
+                const query = searchInput.value.trim();
+                const bodyPart = bodyPartSelect.value;
+                const equipment = equipmentSelect.value;
+
+                try {
+                    let params = new URLSearchParams();
+                    if (query) params.append('search', query);
+                    if (bodyPart) params.append('body_part', bodyPart);
+                    if (equipment) params.append('equipment', equipment);
+
+                    resultsContainer.innerHTML = '<div style="color: var(--text-muted); padding: 10px;">Searching...</div>';
+
+                    const response = await fetch(`/api/exercises?${params.toString()}`);
+                    if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+
+                    const exercises = await response.json();
+                    resultsContainer.innerHTML = '';
+
+                    if (!exercises || exercises.length === 0) {
+                        resultsContainer.innerHTML = '<div style="color: var(--text-muted); padding: 10px;">No exercises found</div>';
+                        return;
+                    }
+
+                    exercises.forEach(ex => {
+                        const div = document.createElement('div');
+                        div.classList.add('search-item');
+                        div.innerHTML = `
+                            <div>
+                                <strong>${ex.name}</strong>
+                                <small style="display:block; color: var(--text-muted);">Target: ${ex.body_part || 'N/A'}</small>
+                            </div>
+                            <div class="add-icon">+</div>
+                        `;
+
+                        div.addEventListener('click', () => {
+                            addExerciseToRoutine(ex.id, ex.name);
+                            resultsContainer.innerHTML = '';
+                            searchInput.value = '';
+                        });
+                        resultsContainer.appendChild(div);
+                    });
+                } catch (err) {
+                    console.error(err);
+                    resultsContainer.innerHTML = '<div style="color: var(--danger-color); padding: 10px;">Error loading exercises.</div>';
+                }
+            }
+
+            searchButton.addEventListener('click', fetchExercises);
+
+            searchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    fetchExercises();
+                }
+            });
+
+            bodyPartSelect.addEventListener('change', fetchExercises);
+            equipmentSelect.addEventListener('change', fetchExercises);
+
+            function addExerciseToRoutine(id, name) {
+                if (document.getElementById(`selected-ex-${id}`)) return;
+
+                const checkbox = symfonyPool.querySelector(`input[value="${id}"]`);
+                if (checkbox) {
+                    checkbox.checked = true;
+                    createVisualListItem(id, name, checkbox);
+                }
+            }
+
+            function createVisualListItem(id, name, checkbox) {
+                const div = document.createElement('div');
+                div.id = `selected-ex-${id}`;
+                div.classList.add('selected-exercise-card');
+                div.innerHTML = `
+                    <span>${name}</span>
+                    <span class="remove-ex" style="cursor:pointer; color: var(--danger-color);">Remove</span>
+                `;
+
+                div.querySelector('.remove-ex').addEventListener('click', () => {
+                    checkbox.checked = false;
+                    div.remove();
+                });
+
+                selectedContainer.appendChild(div);
+            }
+
+            symfonyPool.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                if (cb.checked) {
+                    let label = symfonyPool.querySelector(`label[for="${cb.id}"]`);
+                    let exerciseName = "Exercise";
+
+                    if (label) {
+                        exerciseName = label.textContent.trim();
+                    } else if (cb.nextSibling && cb.nextSibling.nodeType === Node.TEXT_NODE) {
+                        exerciseName = cb.nextSibling.textContent.trim();
+                    } else if (cb.parentElement) {
+                        exerciseName = cb.parentElement.textContent.trim();
+                    }
+
+                    createVisualListItem(cb.value, exerciseName, cb);
+                }
+            });
+        });
+    </script>
 {% endblock %}

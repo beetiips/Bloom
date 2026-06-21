@@ -19,6 +19,26 @@
         {% endif %}
     </head>
     <body>
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-message flash-{{ label }}" style="
+                padding: 12px 20px;
+                margin: 15px auto;
+                max-width: 1200px;
+                border-radius: 8px;
+                background-color: {{ label == 'success' ? '#def7ec' : '#fde8e8' }};
+                color: {{ label == 'success' ? '#03543f' : '#9b1c1c' }};
+                border: 1px solid {{ label == 'success' ? '#bffeaa' : '#f8b4b4' }};
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+                text-align: left;
+                animation: fadeIn 0.3s ease;
+                ">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
         {% block body %}{% endblock %}
     </body>
 </html>

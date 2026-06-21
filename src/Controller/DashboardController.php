@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\WorkoutRoutineRepository;
+use App\Repository\DailyLogRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -12,24 +13,13 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class DashboardController extends AbstractController
 {
     #[Route('/dashboard', name: 'app_dashboard')]
-    public function index(): Response
+    public function index(WorkoutRoutineRepository $workoutRoutineRepository, DailyLogRepository $dailyLogRepository): Response
     {
         $user = $this->getUser();
 
         if (!$user->hasCompletedOnboarding()) {
             return $this->redirectToRoute('app_onboarding');
         }
-
-        return $this->render('dashboard/index.html.twig', [
-            'user' => $user,
-        ]);
-    }
-
-    #[Route('/dashboard', name: 'app_dashboard')]
-    #[IsGranted('ROLE_USER')]
-    public function workoutRoutine(WorkoutRoutineRepository $workoutRoutineRepository): Response
-    {
-        $user = $this->getUser();
 
         $dayColumn = lcfirst(date('l')) . 'Checked';
 
@@ -38,8 +28,15 @@ class DashboardController extends AbstractController
             $dayColumn => true
         ]);
 
+        $latestLog = $dailyLogRepository->findOneBy(
+            ['user' => $user],
+            ['date' => 'DESC']
+        );
+
         return $this->render('dashboard/index.html.twig', [
+            'user' => $user,
             'dayRoutines' => $dayRoutines,
+            'latestLog' => $latestLog,
         ]);
     }
 }

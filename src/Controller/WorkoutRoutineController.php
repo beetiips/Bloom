@@ -70,7 +70,7 @@ final class WorkoutRoutineController extends AbstractController
 
         return $this->render('routine/edit.html.twig', [
             'form' => $form->createView(),
-            'workoutRoutine' => $workoutRoutine,
+            'routine' => $workoutRoutine,
         ]);
     }
 
@@ -82,7 +82,7 @@ final class WorkoutRoutineController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        if ($this->isCsrfTokenValid('delete'.$workoutRoutine->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'. $workoutRoutine->getId(), $request->request->get('_token'))) {
             $entityManager->remove($workoutRoutine);
             $entityManager->flush();
         }

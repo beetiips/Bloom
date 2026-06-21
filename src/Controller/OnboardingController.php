@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\DailyLog;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+
 #[IsGranted('ROLE_USER')]
 final class OnboardingController extends AbstractController
 {
@@ -28,7 +30,18 @@ final class OnboardingController extends AbstractController
 
             $user->setLevel($level);
             $user->setHasCompletedOnboarding(true);
+
+            $dailyLog = new DailyLog();
+            $dailyLog->setUser($user);
+            $dailyLog->setDate(new \DateTime());
+            $dailyLog->setSleepDuration((float)$sleepDuration);
+            $dailyLog->setSleepQuality((int)$sleepQuality);
+            $dailyLog->setMentalNote($mealText);
+
+            $entityManager->persist($dailyLog);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Your onboarding is complete! Welcome to Bloom.');
 
             return $this->redirectToRoute('app_dashboard');
         }

@@ -9,36 +9,45 @@
 
 {% block body %}
 
-    <div class="dashboard-container">
+    <main class="dashboard-container" role="main">
         <header class="dashboard-header">
             <div class="welcome-text">
-                <h1>Nice to see you {{ user.pseudo|default('Philibert') }} </h1>
+                <h1>Nice to see you {{ user.pseudo|default('user') }} </h1>
                 <p>Here's a little look into your day:</p>
             </div>
         </header>
 
-        <main class="dashboard-grid">
-            <div class="dashboard-card status-card">
+        <section class="dashboard-grid" aria-label="Dashboard grid">
+            <article class="dashboard-card status-card">
                 <h3>Sleep</h3>
-                <p class="card-desc">Your last nights</p>
+                <p class="card-desc">Your last night</p>
                 <div class="card-content">
-                    <span class="main-stat">No nights yet</span>
-                    <p>Fill your night's data for a few days to see them here!</p>
+                    {% if latestLog is not null and latestLog.sleepDuration is not null %}
+                        <span class="main-stat">{{ latestLog.sleepDuration }} hours</span>
+                        <p>Quality: <strong>{{ latestLog.sleepQuality }}/5</strong></p>
+                    {% else %}
+                        <span class="main-stat">No nights yet</span>
+                        <p>Fill your night's data for a few days to see them here!</p>
+                    {% endif %}
                 </div>
-            </div>
+            </article>
 
             <div class="dashboard-card status-card">
                 <h3>Nutrition</h3>
                 <p class="card-desc">Your last meals</p>
                 <div class="card-content">
-                    <p class="empty-text">No meal logged in today.</p>
+                    {% if latestLog is not null and latestLog.mentalNote is not null %}
+                        <p>{{ latestLog.mentalNote }}</p>
+                    {% else %}
+                        <p class="empty-text">No meal logged in today.</p>
+                    {% endif %}
                 </div>
             </div>
 
             <div class="dashboard-card action-card">
                 <h3>Today's workout routine</h3>
                 <p class="card-desc">Ready for some movement?</p>
-                {% if dayRoutines %}
+                {% if dayRoutines is not empty %}
                     <div class="routine-list-container">
                         {% for routine in dayRoutines %}
                             <div class="routine-item-card">
@@ -62,7 +71,7 @@
                     <a href="?" class="btn-dashboard btn-secondary">Start a workout</a>
                 </div>
             </div>
-        </main>
-    </div>
+        </section>
+    </main>
 
 {% endblock %}

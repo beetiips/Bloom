@@ -145,7 +145,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->workoutRoutines->contains($workoutRoutine)) {
             $this->workoutRoutines->add($workoutRoutine);
-            $workoutRoutine->setUserId($this);
+            $workoutRoutine->setUser($this);
         }
 
         return $this;
@@ -154,9 +154,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeWorkoutRoutine(WorkoutRoutine $workoutRoutine): static
     {
         if ($this->workoutRoutines->removeElement($workoutRoutine)) {
-            // set the owning side to null (unless already changed)
-            if ($workoutRoutine->getUserId() === $this) {
-                $workoutRoutine->setUserId(null);
+            if ($workoutRoutine->getUser() === $this) {
+                $workoutRoutine->setUser(null);
             }
         }
 
