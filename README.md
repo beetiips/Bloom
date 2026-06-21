@@ -42,29 +42,36 @@ Bloom est une application web fullstack de suivi de fitness et de bien-être, d�
 * Symfony CLI
 
 ### 1. Cloner le dépôt
+
 ```bash
 git clone https://github.com/beetiips/Bloom
 cd bloom```
 
 ### 2. Installer les dépendances
+
 ```bash
 composer install```
 
 ### 3. Configurer l'environnement
+
 Créez un fichier .env.local à la racine et configurez votre chaîne de connexion à la base de données.
 
 ### 4. Créer la base de données et lancer les migrations
+
 ```bash
 php bin/console doctrine:database:create
 php bin/console doctrine:migrations:migrate```
 
 ### 5. Lancer les tests unitaires
+
 ```bash
 php bin/phpunit```
 
 ### 6. Lancer le serveur de développement
+
 ```bash
 symfony server:start```
+
 L'application sera disponible sur http://localhost:8000.
 
 Bloom 00.01.00
