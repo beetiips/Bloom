@@ -45,12 +45,14 @@ Bloom est une application web fullstack de suivi de fitness et de bien-être, d�
 
 ```bash
 git clone https://github.com/beetiips/Bloom
-cd bloom```
+cd bloom
+```
 
 ### 2. Installer les dépendances
 
 ```bash
-composer install```
+composer install
+```
 
 ### 3. Configurer l'environnement
 
@@ -60,17 +62,20 @@ Créez un fichier .env.local à la racine et configurez votre chaîne de connexi
 
 ```bash
 php bin/console doctrine:database:create
-php bin/console doctrine:migrations:migrate```
+php bin/console doctrine:migrations:migrate
+```
 
 ### 5. Lancer les tests unitaires
 
 ```bash
-php bin/phpunit```
+php bin/phpunit
+```
 
 ### 6. Lancer le serveur de développement
 
 ```bash
-symfony server:start```
+symfony server:start
+```
 
 L'application sera disponible sur http://localhost:8000.
 
